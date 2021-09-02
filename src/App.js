@@ -1,23 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
 
 function App() {
+  const [image, setImage] = useState();
+  const [detail, setDetail] = useState();
+  const [height, setHeight] = useState();
+  const [width, setWidth] = useState();
+
+  const onChangePicture = (e) => {
+    setImage(URL.createObjectURL(e.target.files[0]));
+    setDetail(e.target.files[0]);
+  };
+  const handleImageLoad = (e) => {
+    setHeight(e.target.clientHeight);
+    setWidth(e.target.clientWidth);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container App">
+      <div className="my-3 text-center">
+        <label for="formFile" className="form-label text-white">
+          Default file input example
+        </label>
+        <input
+          className="form-control"
+          type="file"
+          id="formFile"
+          onChange={onChangePicture}
+        />
+      </div>
+      {detail ? (
+        <img
+          className="img-thumbnail"
+          src={image}
+          alt={detail && detail.name}
+          onLoad={handleImageLoad}
+        />
+      ) : null}
+      {detail ? (
+        <div className="my-3 text-white">
+          <p>
+            Title: <strong>{detail && detail.name}</strong>
+          </p>
+          <p>
+            Dimension:{" "}
+            <strong>
+              {height}px * {width}px
+            </strong>
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 }
